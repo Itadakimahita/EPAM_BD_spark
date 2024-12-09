@@ -49,7 +49,7 @@ if __name__ == '__main__':
     missing_coords_df = restaurant_df.filter(col("lat").isNull() | col("lng").isNull())
     missing_coords_df.show(5, truncate=False)
 
-    # This part assumes missing coordinates are fetched based on an "address" column.
+    # This part assumes missing coordinates are fetched based on an what API returns us
     missing_coords = missing_coords_df.rdd.map(lambda row: (row.id, fetch_coordinates(f"{row.franchise_name},+countycode={row.country},+{row.city}")))
     updated_coords_df = missing_coords.toDF(["id", "coordinates"])
     
